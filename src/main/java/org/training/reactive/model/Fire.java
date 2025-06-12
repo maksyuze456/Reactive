@@ -41,6 +41,9 @@ public class Fire {
         this.triggeredSirens = triggeredSirens;
     }
 
+    public Fire(double latitude, double longtitude, Status status) {
+    }
+
     public Long getId() {
         return id;
     }
