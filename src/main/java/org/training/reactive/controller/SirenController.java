@@ -11,6 +11,7 @@ import org.training.reactive.service.SirenService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class SirenController {
     @Autowired

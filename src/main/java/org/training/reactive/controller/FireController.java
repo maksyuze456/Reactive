@@ -14,6 +14,7 @@ import org.training.reactive.service.FireService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class FireController {
 
