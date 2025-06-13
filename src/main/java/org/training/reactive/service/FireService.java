@@ -1,6 +1,7 @@
 package org.training.reactive.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.training.reactive.dto.FireRequestDTO;
 import org.training.reactive.dto.FireResponseDTO;
@@ -44,6 +45,15 @@ public class FireService {
         return mapper.toDTO(savedFire);
     }
 
+    public List<FireResponseDTO> getAllActiveFires(Status status) {
+        List<Fire> fires = fireRepository.findAllByStatus(status);
+
+        List<FireResponseDTO> firesDTO = fires.stream()
+                .map(fire -> mapper.toDTO(fire))
+                .collect(Collectors.toList());
+        return firesDTO;
+    }
+
     public List<Siren> triggerSirens(Fire fire) {
         Location fireLocation = new Location(fire.getLatitude(), fire.getLongtitude());
 
@@ -79,4 +89,11 @@ public class FireService {
         return EARTH_RADIUS_KM * c;
     }
 
+    public FireResponseDTO disableFire(long id) {
+        Fire fireToDisable = fireRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fire with id " + id + " not found"));
+        fireToDisable.setStatus(Status.DISABLED);
+        fireToDisable.getTriggeredSirens().forEach(siren -> siren.setStatus(Status.DISABLED));
+        return mapper.toDTO(fireRepository.save(fireToDisable));
+    }
 }
