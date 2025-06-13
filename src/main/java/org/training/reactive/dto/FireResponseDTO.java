@@ -5,5 +5,5 @@ import org.training.reactive.model.Status;
 
 import java.util.List;
 
-public record FireResponseDTO(long id, double latitude, double longtitude, Status status, List<Siren> triggeredSirens) {
+public record FireResponseDTO(long id, double latitude, double longtitude, Status status, List<SirenResponseDTO> triggeredSirens) {
 }

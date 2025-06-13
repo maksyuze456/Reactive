@@ -8,9 +8,11 @@ import org.training.reactive.mappers.FireMapper;
 import org.training.reactive.model.Fire;
 import org.training.reactive.model.Location;
 import org.training.reactive.model.Siren;
+import org.training.reactive.model.Status;
 import org.training.reactive.repository.FireRepository;
 import org.training.reactive.repository.SirenRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,29 +31,36 @@ public class FireService {
 
     public FireResponseDTO addFire(FireRequestDTO fireRequestDTO){
 
-        Fire fire = new Fire(fireRequestDTO.latitude(), fireRequestDTO.longtitude(), fireRequestDTO.status());
+        Fire fire = mapper.toEntity(fireRequestDTO);
 
-        // triggerSirens(fire);
+        List<Siren> triggeredSirens = triggerSirens(fire);
 
-        return mapper.toDTO(fireRepository.save(fire));
+        if (!triggeredSirens.isEmpty()) {
+            fire.setTriggeredSirens(triggeredSirens);
+        } else {
+            fire.setTriggeredSirens(Collections.emptyList());
+        }
+        Fire savedFire = fireRepository.save(fire);
+        return mapper.toDTO(savedFire);
     }
 
-    public void triggerSirens(Fire fire) {
+    public List<Siren> triggerSirens(Fire fire) {
         Location fireLocation = new Location(fire.getLatitude(), fire.getLongtitude());
 
         List<Siren> triggeredSirens = sirenRepository.findAll().stream()
                 .filter(siren -> {
                     Location sirenLocation = new Location(siren.getLatitude(), siren.getLongtitude());
                     double distanceKm = calculateDistanceKM(fireLocation, sirenLocation);
-                    if (distanceKm <=10 && distanceKm >= 0){
+                    if (distanceKm <=10.0 && distanceKm >= 0.0){
+                        siren.setStatus(Status.ACTIVE);
                         return true;
                     } else {
                         return false;
                     }
                 })
-                .toList();
+                .collect(Collectors.toList());
 
-
+        return triggeredSirens;
     }
 
     public double calculateDistanceKM(Location loc1, Location loc2) {
