@@ -1,5 +1,6 @@
 package org.training.reactive.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,6 +10,8 @@ public class Fire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private double latitude;
     private double longtitude;
 

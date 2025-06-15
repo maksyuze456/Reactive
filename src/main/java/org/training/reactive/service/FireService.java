@@ -3,6 +3,7 @@ package org.training.reactive.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.training.reactive.dto.FireRequestDTO;
 import org.training.reactive.dto.FireResponseDTO;
 import org.training.reactive.mappers.FireMapper;
@@ -31,7 +32,6 @@ public class FireService {
 
 
     public FireResponseDTO addFire(FireRequestDTO fireRequestDTO){
-
         Fire fire = mapper.toEntity(fireRequestDTO);
 
         List<Siren> triggeredSirens = triggerSirens(fire);

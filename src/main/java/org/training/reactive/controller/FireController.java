@@ -5,6 +5,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.training.reactive.dto.FireRequestDTO;
 import org.training.reactive.dto.FireResponseDTO;
@@ -23,7 +24,8 @@ public class FireController {
 
     @PostMapping("/fires")
     public ResponseEntity<FireResponseDTO> addFire(@RequestBody FireRequestDTO fireRequestDTO) {
-        return new ResponseEntity<>(fireService.addFire(fireRequestDTO), HttpStatus.CREATED);
+        FireResponseDTO addedFire = fireService.addFire(fireRequestDTO);
+        return new ResponseEntity<>(addedFire, HttpStatus.CREATED);
     }
 
     @GetMapping("/fires")
