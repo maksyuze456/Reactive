@@ -12,17 +12,11 @@ public class Siren {
     private long id;
     private double latitude;
     private double longtitude;
-
     @Enumerated(EnumType.STRING)
     private Status status;
-
     @ManyToMany(mappedBy = "triggeredSirens")
     private List<Fire> activeFires;
-
-    public Siren() {
-
-    }
-
+    public Siren() {}
     public Siren(long id, double latitude, double longtitude, Status status, List<Fire> activeFires) {
         this.id = id;
         this.latitude = latitude;
@@ -30,7 +24,6 @@ public class Siren {
         this.status = status;
         this.activeFires = activeFires;
     }
-
     public Siren(double latitude, double longtitude, Status status, List<Fire> activeFires) {
         this.latitude = latitude;
         this.longtitude = longtitude;

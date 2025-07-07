@@ -26,9 +26,10 @@ public class FireServiceTest {
         double distance = fireService.calculateDistanceKM(loc1, loc2);
 
         double above10km = fireService.calculateDistanceKM(loc2, loc3);
-
+        System.out.println(distance);
+        System.out.println(above10km);
         assertTrue(distance <= 2.0);
-        assertFalse(above10km < 10);
+        assertTrue(above10km > 10);
 
     }
 
