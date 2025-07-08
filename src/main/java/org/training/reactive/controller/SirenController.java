@@ -3,10 +3,12 @@ package org.training.reactive.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.training.reactive.dto.SirenRequestDTO;
 import org.training.reactive.dto.SirenResponseDTO;
 import org.training.reactive.model.Siren;
+import org.training.reactive.security.security_entity.UserPrincipal;
 import org.training.reactive.service.SirenService;
 
 import java.util.List;
@@ -24,8 +26,10 @@ public class SirenController {
     }
 
     @GetMapping("/sirens")
-    public ResponseEntity<List<SirenResponseDTO>> findAll() {
-        return new ResponseEntity<>(sirenService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<SirenResponseDTO>> findAll(Authentication authentication) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        List<SirenResponseDTO> sirens = sirenService.findAll();
+        return ResponseEntity.ok(sirens);
     }
 
     @PostMapping("/sirens/{id}")
