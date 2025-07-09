@@ -14,7 +14,7 @@ import org.training.reactive.service.FireService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class FireController {
 

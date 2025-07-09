@@ -2,10 +2,13 @@ package org.training.reactive.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.training.reactive.model.Siren;
 import org.training.reactive.model.Status;
+import org.training.reactive.model.User;
 import org.training.reactive.repository.SirenRepository;
+import org.training.reactive.repository.UserRepository;
 
 import java.util.Collections;
 
@@ -13,6 +16,11 @@ import java.util.Collections;
 public class InitData implements CommandLineRunner {
     @Autowired
     SirenRepository sirenRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -46,6 +54,9 @@ public class InitData implements CommandLineRunner {
 
         Siren s10 = new Siren(34.02, -118.44, Status.DISABLED, Collections.emptyList());
         sirenRepository.save(s10);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User u1 = new User("maksyuze456", encoder.encode("fess36"), "maksyuze456@gmail.com");
+        userRepository.save(u1);
 
     }
 

@@ -13,7 +13,7 @@ import org.training.reactive.service.SirenService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 public class SirenController {
     @Autowired
